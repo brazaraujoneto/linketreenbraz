@@ -1,0 +1,493 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+:root {
+    --primary: #ff0000;
+    --tech-grey: #2c2f36;
+    --soft-grey: #85888f;
+    --background-dark: #0a0a0c;
+    --card-dark: #16181d;
+}
+
+body {
+    font-family: 'Public Sans', sans-serif;
+    background-color: var(--background-dark);
+    color: #f1f5f9;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 2rem 1rem;
+    overflow-x: hidden;
+    position: relative;
+}
+
+#tech-canvas {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 0;
+    pointer-events: none;
+}
+
+.scanline {
+    width: 100%;
+    height: 2px;
+    background: rgba(255, 0, 0, 0.1);
+    position: fixed;
+    animation: scanline 6s linear infinite;
+    z-index: 10;
+    pointer-events: none;
+}
+
+@keyframes scanline {
+    0% { top: 0; }
+    100% { top: 100%; }
+}
+
+.portfolio-card {
+    width: 100%;
+    max-width: 480px;
+    background-color: var(--card-dark);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    box-shadow: 0 0 50px rgba(0, 0, 0, 0.5);
+    border-radius: 2.5rem;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    position: relative;
+    z-index: 20;
+}
+
+.banner {
+    width: 100%;
+    height: 8rem;
+    background-color: var(--tech-grey);
+    position: relative;
+    overflow: hidden;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    background-image: repeating-linear-gradient(
+        45deg,
+        rgba(255, 0, 0, 0.05) 0px,
+        rgba(255, 0, 0, 0.05) 2px,
+        transparent 2px,
+        transparent 10px
+    );
+}
+
+.banner-overlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to bottom, transparent, rgba(22, 24, 29, 0.8));
+}
+
+.banner-lines {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+    opacity: 0.2;
+}
+
+.banner-lines .line {
+    height: 0.25rem;
+    background-color: var(--primary);
+}
+
+.banner-lines .line:nth-child(1) { width: 3rem; }
+.banner-lines .line:nth-child(2) { width: 2rem; }
+.banner-lines .line:nth-child(3) { width: 4rem; }
+
+.profile-header {
+    width: 100%;
+    margin-top: -4rem;
+    padding-bottom: 1.5rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    position: relative;
+    z-index: 30;
+}
+
+.profile-pic-wrapper {
+    position: relative;
+    margin-bottom: 1.5rem;
+}
+
+.profile-glow {
+    position: absolute;
+    inset: 0;
+    border-radius: 50%;
+    background-color: rgba(255, 0, 0, 0.2);
+    filter: blur(1.5rem);
+    animation: pulse 2s ease-in-out infinite;
+}
+
+@keyframes pulse {
+    0%, 100% { opacity: 0.5; transform: scale(1); }
+    50% { opacity: 1; transform: scale(1.1); }
+}
+
+.profile-pic {
+    width: 8rem;
+    height: 8rem;
+    border-radius: 50%;
+    border: 4px solid var(--card-dark);
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    position: relative;
+    z-index: 10;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.profile-pic:hover {
+    transform: scale(1.1);
+    box-shadow: 0 25px 60px rgba(0, 0, 0, 0.6);
+}
+
+.status-indicator {
+    position: absolute;
+    bottom: 0.5rem;
+    right: 0.5rem;
+    width: 1.25rem;
+    height: 1.25rem;
+    background-color: var(--primary);
+    border-radius: 50%;
+    border: 4px solid var(--card-dark);
+    box-shadow: 0 0 10px var(--primary);
+}
+
+.profile-name {
+    font-size: 2.25rem;
+    font-weight: 900;
+    letter-spacing: -0.05em;
+    color: white;
+    text-transform: uppercase;
+    margin-bottom: 0.25rem;
+    font-style: italic;
+}
+
+.brush-highlight {
+    position: relative;
+    z-index: 1;
+}
+
+.brush-highlight::after {
+    content: "";
+    position: absolute;
+    left: -2%;
+    bottom: 4px;
+    width: 104%;
+    height: 12px;
+    background-color: rgba(255, 0, 0, 0.6);
+    z-index: -1;
+    transform: skewX(-15deg);
+    filter: blur(1px);
+}
+
+.profile-title {
+    color: var(--primary);
+    font-family: 'Fira Code', monospace;
+    letter-spacing: 0.2em;
+    font-size: 0.625rem;
+    text-transform: uppercase;
+    font-weight: 700;
+    background-color: rgba(255, 0, 0, 0.1);
+    padding: 0.25rem 0.75rem;
+    border-radius: 9999px;
+    border: 1px solid rgba(255, 0, 0, 0.2);
+    margin-top: 0.5rem;
+}
+
+.content {
+    width: 100%;
+    padding: 0 1.5rem 2.5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+}
+
+.link-btn {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    height: 3.5rem;
+    padding: 0 1.5rem;
+    background-color: rgba(255, 255, 255, 0.05);
+    backdrop-filter: blur(10px);
+    border-radius: 0.75rem;
+    border: 1px solid rgba(255, 0, 0, 0.3);
+    text-decoration: none;
+    transition: all 0.3s ease;
+}
+
+.link-btn:hover {
+    box-shadow: 0 0 15px rgba(255, 0, 0, 0.6), inset 0 0 5px rgba(255, 0, 0, 0.4);
+    border-color: var(--primary);
+    transform: translateY(-1px);
+}
+
+.link-content {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.link-btn .material-symbols-outlined {
+    color: var(--primary);
+    font-size: 1.25rem;
+}
+
+.link-text {
+    font-weight: 700;
+    font-size: 0.875rem;
+    letter-spacing: 0.05em;
+    color: #e2e8f0;
+}
+
+.link-btn .arrow {
+    color: rgba(255, 0, 0, 0.4);
+    transition: color 0.3s ease;
+}
+
+.link-btn:hover .arrow {
+    color: var(--primary);
+}
+
+.cta-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 3.5rem;
+    padding: 0 1.5rem;
+    background-color: var(--primary);
+    color: black;
+    font-weight: 900;
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    border-radius: 0.75rem;
+    box-shadow: 0 0 25px rgba(255, 0, 0, 0.4);
+    border: 2px solid var(--primary);
+    text-decoration: none;
+    transition: all 0.3s ease;
+    margin-top: 0.5rem;
+}
+
+.cta-btn:hover {
+    box-shadow: 0 0 40px rgba(255, 0, 0, 0.6);
+    transform: translateY(-2px);
+}
+
+.cta-content {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+}
+
+.about-section {
+    margin-top: 2rem;
+    padding-top: 2rem;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    position: relative;
+}
+
+.corner-accent {
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 1rem;
+    height: 1rem;
+    border-top: 2px solid rgba(255, 0, 0, 0.3);
+    border-right: 2px solid rgba(255, 0, 0, 0.3);
+}
+
+.section-title {
+    font-size: 0.75rem;
+    font-family: 'Fira Code', monospace;
+    font-weight: 700;
+    color: var(--primary);
+    text-transform: uppercase;
+    letter-spacing: 0.3em;
+    margin-bottom: 1rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.pulse-dot {
+    width: 0.5rem;
+    height: 0.5rem;
+    background-color: var(--primary);
+    animation: pulse 2s ease-in-out infinite;
+}
+
+.about-text {
+    color: #94a3b8;
+    font-size: 0.875rem;
+    line-height: 1.6;
+    font-weight: 300;
+    text-align: justify;
+    margin-bottom: 1.5rem;
+}
+
+.signature-wrapper {
+    display: flex;
+    justify-content: flex-end;
+    align-items: baseline;
+    gap: 0.5rem;
+}
+
+.signature-label {
+    font-size: 0.625rem;
+    font-family: 'Fira Code', monospace;
+    color: rgba(255, 0, 0, 0.4);
+    text-transform: uppercase;
+}
+
+.signature {
+    font-size: 1.5rem;
+    color: white;
+    font-family: 'Playfair Display', serif;
+    font-style: italic;
+}
+
+.main-footer {
+    margin-top: 3rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 2rem;
+    position: relative;
+    z-index: 20;
+}
+
+.social-buttons {
+    display: flex;
+    gap: 1.5rem;
+}
+
+.social-btn {
+    width: 3rem;
+    height: 3rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 0.5rem;
+    background-color: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    color: #94a3b8;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.social-btn:hover {
+    color: var(--primary);
+    border-color: var(--primary);
+    box-shadow: 0 0 15px rgba(255, 0, 0, 0.3);
+}
+
+.social-btn .material-symbols-outlined {
+    font-size: 1.5rem;
+}
+
+.footer-text {
+    text-align: center;
+}
+
+.footer-primary {
+    color: rgba(255, 255, 255, 0.6);
+    font-size: 0.625rem;
+    font-family: 'Fira Code', monospace;
+    text-transform: uppercase;
+    letter-spacing: 0.4em;
+    margin-bottom: 0.25rem;
+}
+
+.footer-secondary {
+    color: #475569;
+    font-size: 0.563rem;
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    font-weight: 700;
+}
+
+.theme-toggle {
+    margin-top: 0.5rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.5rem 1.5rem;
+    border-radius: 0.5rem;
+    background-color: rgba(255, 0, 0, 0.1);
+    border: 1px solid rgba(255, 0, 0, 0.3);
+    color: var(--primary);
+    font-size: 0.625rem;
+    font-family: 'Fira Code', monospace;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.theme-toggle:hover {
+    background-color: rgba(255, 0, 0, 0.2);
+}
+
+.theme-toggle .material-symbols-outlined {
+    font-size: 0.875rem;
+}
+
+.link-btn[href*="spotify"] {
+    background-color: rgba(255, 255, 255, 0.05); /* Cinza igual aos demais */
+    color: white;
+    border-radius: 0.75rem; /* Ajuste para consistência */
+    padding: 0 1.5rem; /* Igual aos outros botões */
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    text-decoration: none;
+    transition: all 0.3s ease;
+    height: 3.5rem; /* Altura consistente */
+}
+
+.link-btn[href*="spotify"]:hover {
+    background-color: rgba(255, 255, 255, 0.1); /* Hover cinza mais claro */
+    box-shadow: 0 0 15px rgba(255, 0, 0, 0.6), inset 0 0 5px rgba(255, 0, 0, 0.4); /* Efeito hover consistente */
+    border-color: var(--primary);
+    transform: translateY(-1px);
+}
+
+.link-btn[href*="spotify"] .icon {
+    filter: hue-rotate(0deg) saturate(100%) brightness(0.8) sepia(1) hue-rotate(-50deg); /* Vermelho */
+}
+
+.social-btn img[alt="GitHub"] {
+    filter: invert(100%);
+}
+
+.social-btn img[alt="Spotify"] {
+    filter: hue-rotate(0deg) saturate(100%) brightness(0.8) sepia(1) hue-rotate(-50deg);
+}
+
+@media (min-width: 768px) {
+    body {
+        padding: 4rem 1rem;
+    }
+
+    .content {
+        padding: 0 2.5rem 2.5rem;
+    }
+}
